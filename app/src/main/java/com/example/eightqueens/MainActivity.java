@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import java.util.HashSet;
@@ -140,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "Illegal Move", Toast.LENGTH_SHORT).show();
         } else {
-
             if (lightBlue[num - 1]) {
                 if (hasQueen[num - 1]) {
                     v.setBackgroundResource(R.color.carolinaBlue);
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void celebrate(){
-        Toast.makeText(getApplicationContext(),"YOU WIN!!!", Toast.LENGTH_SHORT).show();
+       Toast.makeText(getApplicationContext(),"YOU WIN!!!", Toast.LENGTH_SHORT).show();
     }
     public void reset(View v){
         numQueens = 0;
