@@ -53,7 +53,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        populateButtons();
 
+    }
+
+    public void populateButtons(){
         buttons[0] = findViewById(R.id.button1);
         buttons[1] = findViewById(R.id.button2);
         buttons[2] = findViewById(R.id.button3);
@@ -120,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         buttons[63] = findViewById(R.id.button64);
 
     }
-
     public void buttonClicked(View v){
 
      Log.v("MY_TAG", "button clicked");
@@ -134,9 +137,7 @@ public class MainActivity extends AppCompatActivity {
         }
         boolean queenOnD = queenOnDiagonal(num, hasQueen, topEdge,bottomEdge,leftEdge,rightEdge);
         if((queenOnD || rowHasQueen[row-1] || colHasQueen[col-1]) && !hasQueen[num-1]){
-            if(queenOnD){
-            //    Toast.makeText(getApplicationContext(), num +":queen on D", Toast.LENGTH_SHORT).show();
-            }
+
             Toast.makeText(getApplicationContext(), "Illegal Move", Toast.LENGTH_SHORT).show();
         } else {
 
