@@ -59,73 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void populateButtons(){
-        buttons[0] = findViewById(R.id.button1);
-        buttons[1] = findViewById(R.id.button2);
-        buttons[2] = findViewById(R.id.button3);
-        buttons[3] = findViewById(R.id.button4);
-        buttons[4] = findViewById(R.id.button5);
-        buttons[5] = findViewById(R.id.button6);
-        buttons[6] = findViewById(R.id.button7);
-        buttons[7] = findViewById(R.id.button8);
-        buttons[8] = findViewById(R.id.button9);
-        buttons[9] = findViewById(R.id.button10);
-        buttons[10] = findViewById(R.id.button11);
-        buttons[11] = findViewById(R.id.button12);
-        buttons[12] = findViewById(R.id.button13);
-        buttons[13] = findViewById(R.id.button14);
-        buttons[14] = findViewById(R.id.button15);
-        buttons[15] = findViewById(R.id.button16);
-        buttons[16] = findViewById(R.id.button17);
-        buttons[17] = findViewById(R.id.button18);
-        buttons[18] = findViewById(R.id.button19);
-        buttons[19] = findViewById(R.id.button20);
-        buttons[20] = findViewById(R.id.button21);
-        buttons[21] = findViewById(R.id.button22);
-        buttons[22] = findViewById(R.id.button23);
-        buttons[23] = findViewById(R.id.button24);
-        buttons[24] = findViewById(R.id.button25);
-        buttons[25] = findViewById(R.id.button26);
-        buttons[26] = findViewById(R.id.button27);
-        buttons[27] = findViewById(R.id.button28);
-        buttons[28] = findViewById(R.id.button29);
-        buttons[29] = findViewById(R.id.button30);
-        buttons[30] = findViewById(R.id.button31);
-        buttons[31] = findViewById(R.id.button32);
-        buttons[32] = findViewById(R.id.button33);
-        buttons[33] = findViewById(R.id.button34);
-        buttons[34] = findViewById(R.id.button35);
-        buttons[35] = findViewById(R.id.button36);
-        buttons[36] = findViewById(R.id.button37);
-        buttons[37] = findViewById(R.id.button38);
-        buttons[38] = findViewById(R.id.button39);
-        buttons[39] = findViewById(R.id.button40);
-        buttons[40] = findViewById(R.id.button41);
-        buttons[41] = findViewById(R.id.button42);
-        buttons[42] = findViewById(R.id.button43);
-        buttons[43] = findViewById(R.id.button44);
-        buttons[44] = findViewById(R.id.button45);
-        buttons[45] = findViewById(R.id.button46);
-        buttons[46] = findViewById(R.id.button47);
-        buttons[47] = findViewById(R.id.button48);
-        buttons[48] = findViewById(R.id.button49);
-        buttons[49] = findViewById(R.id.button50);
-        buttons[50] = findViewById(R.id.button51);
-        buttons[51] = findViewById(R.id.button52);
-        buttons[52] = findViewById(R.id.button53);
-        buttons[53] = findViewById(R.id.button54);
-        buttons[54] = findViewById(R.id.button55);
-        buttons[55] = findViewById(R.id.button56);
-        buttons[56] = findViewById(R.id.button57);
-        buttons[57] = findViewById(R.id.button58);
-        buttons[58] = findViewById(R.id.button59);
-        buttons[59] = findViewById(R.id.button60);
-        buttons[60] = findViewById(R.id.button61);
-        buttons[61] = findViewById(R.id.button62);
-        buttons[62] = findViewById(R.id.button63);
-        buttons[63] = findViewById(R.id.button64);
 
-    }
     public void buttonClicked(View v){
 
      Log.v("MY_TAG", "button clicked");
@@ -138,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             row--;
         }
         boolean queenOnD = queenOnDiagonal(num, hasQueen, topEdge,bottomEdge,leftEdge,rightEdge);
-        if((queenOnD || rowHasQueen[row-1] || colHasQueen[col-1]) && !hasQueen[num-1]){
-
+      //  if((queenOnD || rowHasQueen[row-1] || colHasQueen[col-1]) && !hasQueen[num-1]){
+if (canPlace(num)){
             Toast.makeText(getApplicationContext(), "Illegal Move", Toast.LENGTH_SHORT).show();
         } else {
             if (lightBlue[num - 1]) {
@@ -175,6 +109,48 @@ public class MainActivity extends AppCompatActivity {
 
     public void celebrate(){
        Toast.makeText(getApplicationContext(),"YOU WIN!!!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void giveUp(View v){
+        if(autoFill(0)){
+            for(int i = 0; i < 64; i++){
+                if(hasQueen[i]){
+                    buttons[i].setBackgroundResource(R.drawable.dark_queen);
+                }
+            }
+        } else{
+            Toast.makeText(getApplicationContext(), "No Solution",Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    public boolean autoFill(int column){
+        HashSet<Integer> queenLoc = new HashSet<Integer>();
+        if(column >= 8){
+            return true;
+        }
+        for(int i = 0; i< 8; i++){
+            if(canPlace(i*8  + column)){
+                hasQueen[i*8+ column] = true;
+                if(autoFill(column+1)){
+                    return true;
+                }
+
+                hasQueen[i*8 + column] = false;
+            }
+        }
+        return false;
+    }
+
+    public boolean canPlace(int index){   //// takes 0-63
+        int row = index/8;
+        int col = index%8-1;
+      //  if((queenOnD || rowHasQueen[row-1] || colHasQueen[col-1]) && !hasQueen[num-1]){
+        if(rowHasQueen[row] || colHasQueen[col] || queenOnDiagonal(index, hasQueen,topEdge,bottomEdge,leftEdge,rightEdge)&& !hasQueen[index]){
+            return false;
+        }
+        return true;
     }
     public void reset(View v){
         numQueens = 0;
@@ -292,5 +268,73 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    public void populateButtons(){
+        buttons[0] = findViewById(R.id.button1);
+        buttons[1] = findViewById(R.id.button2);
+        buttons[2] = findViewById(R.id.button3);
+        buttons[3] = findViewById(R.id.button4);
+        buttons[4] = findViewById(R.id.button5);
+        buttons[5] = findViewById(R.id.button6);
+        buttons[6] = findViewById(R.id.button7);
+        buttons[7] = findViewById(R.id.button8);
+        buttons[8] = findViewById(R.id.button9);
+        buttons[9] = findViewById(R.id.button10);
+        buttons[10] = findViewById(R.id.button11);
+        buttons[11] = findViewById(R.id.button12);
+        buttons[12] = findViewById(R.id.button13);
+        buttons[13] = findViewById(R.id.button14);
+        buttons[14] = findViewById(R.id.button15);
+        buttons[15] = findViewById(R.id.button16);
+        buttons[16] = findViewById(R.id.button17);
+        buttons[17] = findViewById(R.id.button18);
+        buttons[18] = findViewById(R.id.button19);
+        buttons[19] = findViewById(R.id.button20);
+        buttons[20] = findViewById(R.id.button21);
+        buttons[21] = findViewById(R.id.button22);
+        buttons[22] = findViewById(R.id.button23);
+        buttons[23] = findViewById(R.id.button24);
+        buttons[24] = findViewById(R.id.button25);
+        buttons[25] = findViewById(R.id.button26);
+        buttons[26] = findViewById(R.id.button27);
+        buttons[27] = findViewById(R.id.button28);
+        buttons[28] = findViewById(R.id.button29);
+        buttons[29] = findViewById(R.id.button30);
+        buttons[30] = findViewById(R.id.button31);
+        buttons[31] = findViewById(R.id.button32);
+        buttons[32] = findViewById(R.id.button33);
+        buttons[33] = findViewById(R.id.button34);
+        buttons[34] = findViewById(R.id.button35);
+        buttons[35] = findViewById(R.id.button36);
+        buttons[36] = findViewById(R.id.button37);
+        buttons[37] = findViewById(R.id.button38);
+        buttons[38] = findViewById(R.id.button39);
+        buttons[39] = findViewById(R.id.button40);
+        buttons[40] = findViewById(R.id.button41);
+        buttons[41] = findViewById(R.id.button42);
+        buttons[42] = findViewById(R.id.button43);
+        buttons[43] = findViewById(R.id.button44);
+        buttons[44] = findViewById(R.id.button45);
+        buttons[45] = findViewById(R.id.button46);
+        buttons[46] = findViewById(R.id.button47);
+        buttons[47] = findViewById(R.id.button48);
+        buttons[48] = findViewById(R.id.button49);
+        buttons[49] = findViewById(R.id.button50);
+        buttons[50] = findViewById(R.id.button51);
+        buttons[51] = findViewById(R.id.button52);
+        buttons[52] = findViewById(R.id.button53);
+        buttons[53] = findViewById(R.id.button54);
+        buttons[54] = findViewById(R.id.button55);
+        buttons[55] = findViewById(R.id.button56);
+        buttons[56] = findViewById(R.id.button57);
+        buttons[57] = findViewById(R.id.button58);
+        buttons[58] = findViewById(R.id.button59);
+        buttons[59] = findViewById(R.id.button60);
+        buttons[60] = findViewById(R.id.button61);
+        buttons[61] = findViewById(R.id.button62);
+        buttons[62] = findViewById(R.id.button63);
+        buttons[63] = findViewById(R.id.button64);
+
     }
 }
