@@ -1,5 +1,6 @@
 package com.example.eightqueens;
 
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -71,10 +72,28 @@ public class MainActivity extends AppCompatActivity {
             col = 8;
             row--;
         }
+        final int n = num;
         boolean queenOnD = queenOnDiagonal(num, hasQueen, topEdge,bottomEdge,leftEdge,rightEdge);
-      //  if((queenOnD || rowHasQueen[row-1] || colHasQueen[col-1]) && !hasQueen[num-1]){
-if (canPlace(num)){
-            Toast.makeText(getApplicationContext(), "Illegal Move", Toast.LENGTH_SHORT).show();
+        if((queenOnD || rowHasQueen[row-1] || colHasQueen[col-1]) && !hasQueen[num-1]){
+           v.setBackgroundResource(R.drawable.stop);
+
+            new CountDownTimer(400, 10) { // 5000 = 5 sec
+
+                public void onTick(long millisUntilFinished) {
+                }
+
+                public void onFinish() {
+                    if(lightBlue[n-1]){
+                        buttons[n-1].setBackgroundResource(R.color.carolinaBlue);
+                    } else{
+                        buttons[n-1].setBackgroundResource(R.color.navy);
+
+                    }
+                }
+            }.start();
+
+
+          //  Toast.makeText(getApplicationContext(), "Illegal Move", Toast.LENGTH_SHORT).show();
         } else {
             if (lightBlue[num - 1]) {
                 if (hasQueen[num - 1]) {
@@ -102,56 +121,12 @@ if (canPlace(num)){
             hasQueen[num-1] = !hasQueen[num-1];
         }
 
-
-
-       // Toast.makeText(getApplicationContext(), s + " row: " + row + " col:" + col,Toast.LENGTH_SHORT ).show();
     }
 
     public void celebrate(){
        Toast.makeText(getApplicationContext(),"YOU WIN!!!", Toast.LENGTH_SHORT).show();
     }
 
-    public void giveUp(View v){
-        if(autoFill(0)){
-            for(int i = 0; i < 64; i++){
-                if(hasQueen[i]){
-                    buttons[i].setBackgroundResource(R.drawable.dark_queen);
-                }
-            }
-        } else{
-            Toast.makeText(getApplicationContext(), "No Solution",Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
-    public boolean autoFill(int column){
-        HashSet<Integer> queenLoc = new HashSet<Integer>();
-        if(column >= 8){
-            return true;
-        }
-        for(int i = 0; i< 8; i++){
-            if(canPlace(i*8  + column)){
-                hasQueen[i*8+ column] = true;
-                if(autoFill(column+1)){
-                    return true;
-                }
-
-                hasQueen[i*8 + column] = false;
-            }
-        }
-        return false;
-    }
-
-    public boolean canPlace(int index){   //// takes 0-63
-        int row = index/8;
-        int col = index%8-1;
-      //  if((queenOnD || rowHasQueen[row-1] || colHasQueen[col-1]) && !hasQueen[num-1]){
-        if(rowHasQueen[row] || colHasQueen[col] || queenOnDiagonal(index, hasQueen,topEdge,bottomEdge,leftEdge,rightEdge)&& !hasQueen[index]){
-            return false;
-        }
-        return true;
-    }
     public void reset(View v){
         numQueens = 0;
         for(int i = 0; i < rowHasQueen.length; i++){
